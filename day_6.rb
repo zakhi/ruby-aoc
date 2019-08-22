@@ -1,54 +1,47 @@
-Coordinate = Struct.new(:x, :y) do
-  def to_s
-    "<#{x}, #{y}>"
-  end
+require_relative("helpers/grid")
 
-  def distance_to(other)
-    (self.x - other.x).abs + (self.y - other.y).abs
-  end
-
-  def closest_coordinates
+class Point
+  def closest_points
     @closest ||= []
-  end
-
-  def area
-    closest_coordinates.length
   end
 end
 
 class Grid
-  def initialize(coordinates)
-    @coordinates = coordinates
-    @xs = Range.new(*coordinates.map(&:x).minmax)
-    @ys = Range.new(*coordinates.map(&:y).minmax)
-
-    all_locations.each do |location|
-      *, closest = @coordinates.group_by { |c| c.distance_to(location) }.min
-      closest.first.closest_coordinates << location if closest.length == 1
-    end
-  end
-
-  def largest_area_coordinate
-    @coordinates.select { |c| !in_edge(c) }.max_by(&:area)
-  end
-
-  def all_locations
-    @xs.to_a.product(@ys.to_a).map { |x, y| Coordinate.new(x, y) }
-  end  
-  
-  def in_edge(coordinate)
-    coordinate.closest_coordinates.any? do |location|
-      location.x == @xs.begin || location.x == @xs.end ||
-      location.y == @ys.begin || location.y == @ys.end
-    end
+  def on_edge(point)
+    point.x == @xs.begin || point.x == @xs.end ||
+    point.y == @ys.begin || point.y == @ys.end
   end
 end
 
-coordinates = File.readlines("input/day_6").map do |line|
+points = File.readlines("input/day_6").map do |line|
   x, y = /(\d+), (\d+)/.match(line).to_a.drop(1).map(&:to_i)
-  Coordinate.new(x, y)
+  Point.new(x, y)
 end
 
-grid = Grid.new(coordinates)
+x_range = Range.new(*points.map(&:x).minmax)
+y_range = Range.new(*points.map(&:y).minmax)
+grid = Grid.new(x_range, y_range)
 
-puts "Part 1: #{grid.largest_area_coordinate.area}"
+grid.each do |location|
+  *, closest = points.group_by { |p| p.distance_to location }.min
+  closest.first.closest_points << location if closest.length == 1
+end
+
+points_with_finite_area = points.select do |point|
+  point.closest_points.all? { |p| !grid.on_edge(p) }
+end
+
+max_area = points_with_finite_area.map { |p| p.closest_points.length }.max
+puts "Part 1: #{max_area}"
+
+expand_size = 10000 / (points.size - 1)
+safe_x_range = (x_range.begin - expand_size .. x_range.end + expand_size)
+safe_y_range = (y_range.begin - expand_size .. y_range.end + expand_size)
+
+safe_grid = Grid.new(safe_x_range, safe_y_range)
+
+safe_area = safe_grid.count do |location|
+  points.sum { |p| p.distance_to(location) } < 10000
+end
+
+puts "Part 2: #{safe_area}"

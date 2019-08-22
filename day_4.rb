@@ -1,3 +1,5 @@
+require_relative("helpers/enumerable")
+
 class Guard
   attr_reader :id
 
@@ -23,7 +25,7 @@ class Guard
   end
 
   def min_most_frequent_asleep
-    min_counts = @sleep_periods.flat_map(&:to_a).group_by(&:itself).transform_values(&:count)
+    min_counts = @sleep_periods.flat_map(&:to_a).tally
     min_counts.max_by(&:last)
   end
 end
