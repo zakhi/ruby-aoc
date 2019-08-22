@@ -1,8 +1,6 @@
 require "set"
 
-changes = File.open("input/day_1") do |file|
-  file.each_line.map(&:to_i)
-end
+changes = File.readlines("input/day_1").map { |line| line.chomp.to_i }
 
 puts "Part 1: #{changes.sum}"
 
