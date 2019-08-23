@@ -10,7 +10,7 @@ end
 puts "Part 1: #{twos * threes}"
 
 match = box_ids.combination(2).each do |(first, second)|
-  same_chars = first.each_char.zip(second.each_char).filter { |c1, c2| c1 == c2 }.map(&:first).join
+  same_chars = first.each_char.zip(second.each_char).select { |c1, c2| c1 == c2 }.map(&:first).join
   break same_chars if same_chars.length == first.length - 1
 end
 
