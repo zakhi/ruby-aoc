@@ -14,7 +14,7 @@ class Grid
 end
 
 points = File.readlines("input/day_6").map do |line|
-  x, y = /(\d+), (\d+)/.match(line).to_a.drop(1).map(&:to_i)
+  x, y = /(\d+), (\d+)/.match(line).values_at(1, 2).map(&:to_i)
   Point.new(x, y)
 end
 

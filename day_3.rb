@@ -13,8 +13,8 @@ class Claim < Grid
 end
 
 claims = File.readlines("input/day_3").map do |line|
-  match = /#(?<id>\d+) @ (?<left>\d+),(?<top>\d+): (?<width>\d+)x(?<height>\d+)/.match(line)
-  Claim.new(match[:id], match[:left].to_i, match[:top].to_i, match[:width].to_i, match[:height].to_i)
+  match = /#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/.match(line)
+  Claim.new(*match.values_at(*1..5).map(&:to_i))
 end
 
 square_overlaps = claims.flat_map(&:to_a).tally
