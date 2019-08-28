@@ -22,7 +22,7 @@ def print(points, time)
   ys = Range.new(*positions.map(&:last).minmax)
 
   for y in ys
-    puts xs.map { |x| positions.include?([x, y]) ? "#" : "." }.join
+    puts xs.map { |x| positions.include?([x, y]) ? "#" : " " }.join
   end
   puts
 end
