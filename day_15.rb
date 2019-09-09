@@ -114,22 +114,22 @@ class Combat
     player.move_to(new_position)
   end
 
-  def next_step_to(to, from:)
-    scan(to) do |position|
-      position == from
-    end
-  end
-
   def find_target(player)
     enemies = enemies_of(player)
-    scan(player.position) do |position|
+    scan_from(player.position) do |position|
       enemies.any? { |enemy| enemy.at?(position) }
     end
   end
 
-  def scan(start)
+  def next_step_to(to, from:)
+    scan_from(to) do |position|
+      position == from
+    end
+  end
+
+  def scan_from(start)
     next_positions = Set[[0,start]]
-    visited = Set.new
+    visited = Set[]
 
     until next_positions.empty?
       distance, current_position = next_positions.min
@@ -153,19 +153,19 @@ class Combat
 
     @field.sort_by(&:first).each do |(y, x), char|
       player = alive_players.find { |player| player.at?([y, x]) }
-      players_in_rows[y] << player
+      players_in_rows[y] << player if player
       rows[y][x] = player ? player.type : char
     end
 
     puts
     puts "After #{@completed_rounds} rounds (Elf attack power: #{@elf_attack_power})" 
     rows.zip(players_in_rows) do |row, players|
-      puts "#{row.join} #{players.compact.join(", ")}"
+      puts "#{row.join} #{players.join(", ")}"
     end
   end
 end
 
-field = Hash.new
+field = {}
 
 File.readlines("input/day_15").each_with_index.map do |line, y|
   line.chomp.each_char.with_index do |char, x|
