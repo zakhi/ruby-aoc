@@ -43,8 +43,8 @@ class FuelGrid
   end
 
   private def fill_sum_grid
-    (0...GRID_SIZE).each do |x|
-      (0...GRID_SIZE).each do |y|
+    GRID_SIZE.times do |x|
+      GRID_SIZE.times do |y|
         @sum_grid[x][y] = @grid[x][y]
         @sum_grid[x][y] += @sum_grid[x - 1][y] if x > 0
         @sum_grid[x][y] += @sum_grid[x][y - 1] if y > 0

@@ -55,7 +55,7 @@ class Game
   end
 end
 
-players, marbles = /(\d+) players; last marble is worth (\d+) points/.match(File.read("input/day_9")).values_at(1, 2).map(&:to_i)
+players, marbles = /(\d+) players; last marble is worth (\d+) points/.match(File.read("input/day_9"))[1..2].map(&:to_i)
 
 game = Game.new(players)
 game.play(marbles)

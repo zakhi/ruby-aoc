@@ -14,7 +14,7 @@ class Grid
 end
 
 points = File.readlines("input/day_6").map do |line|
-  x, y = /(\d+), (\d+)/.match(line).values_at(1, 2).map(&:to_i)
+  x, y = /(\d+), (\d+)/.match(line)[1..2].map(&:to_i)
   Point.new(x, y)
 end
 
@@ -23,7 +23,7 @@ y_range = Range.new(*points.map(&:y).minmax)
 grid = Grid.new(x_range, y_range)
 
 grid.each do |location|
-  *, closest = points.group_by { |p| p.distance_to location }.min
+  *, closest = points.group_by { |p| p.distance_to(location) }.min
   closest.first.closest_points << location if closest.length == 1
 end
 

@@ -24,11 +24,11 @@ def transform(state, rules)
     rules.include? plants_in_area.map { |i| i - index }
   end
 
-  new_state.reject(&:nil?).to_set
+  new_state.to_set
 end
 
 def grow(state, rules, generations) 
-  generations.times.inject(state) do |current_state, *|
+  generations.times.inject(state) do |current_state|
     transform(current_state, rules)
   end
 end

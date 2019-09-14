@@ -4,7 +4,7 @@ changes = File.readlines("input/day_1").map { |line| line.chomp.to_i }
 
 puts "Part 1: #{changes.sum}"
 
-met_frequencies = Set.new
+met_frequencies = Set[]
 current_frequency = 0
 
 repeated_frequency = changes.cycle.each do |change|

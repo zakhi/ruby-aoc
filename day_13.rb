@@ -1,10 +1,10 @@
 Location = Struct.new(:x, :y) do
-  def to_s
-    "#{x},#{y}"
-  end
-
   def <=>(other)
     [y, x] <=> [other.y, other.x]
+  end
+
+  def to_s
+    "#{x},#{y}"
   end
 end
 
@@ -85,7 +85,7 @@ class Tracks
   end
 
   def running_carts
-    @carts.reject { |cart| @crashed.include? cart }
+    @carts.reject { |cart| @crashed.include?(cart) }
   end
 end
 

@@ -1,13 +1,13 @@
 require "set"
 
 class Array
-  alias :y :first
-  alias :x :last
+  alias_method :y, :first
+  alias_method :x, :last
 end
 
 class Land
   def initialize(blocks)
-    @blocks = Set[*blocks]
+    @blocks = blocks.to_set
     @waters = Set[]
     @min_y, @max_y = @blocks.map(&:y).minmax
   end
@@ -30,22 +30,23 @@ class Land
 
     while current.y < @max_y
       target = tile_below(current)
-      if blocked?(target)
-        return flow_sideways(current)
-      else
-        @waters << target if target.y >= @min_y
-        current = target
-      end
+      return flow_sideways(current) if blocked?(target)
+      @waters << target if target.y >= @min_y
+      current = target
     end
     true
   end
 
   def flow_sideways(start)
-    right_reached_end, right_blocked = flow_one_side(start, :right) 
-    left_reached_end, left_blocked = flow_one_side(start, :left) 
+    right_reached_end, right_blocked_tiles = flow_one_side(start, :right) 
+    left_reached_end, left_blocked_tiles = flow_one_side(start, :left) 
 
-    @blocks.merge(right_blocked + left_blocked) if right_blocked and left_blocked
-    right_reached_end or left_reached_end
+    if right_blocked_tiles and left_blocked_tiles
+      @blocks.merge(right_blocked_tiles + left_blocked_tiles)
+      return false
+    end
+
+    right_reached_end and left_reached_end
   end
 
   def flow_one_side(start, direction)
@@ -55,7 +56,7 @@ class Land
       target = [current.y, current.x + (direction == :right ? 1 : -1)]
       if blocked?(target)
         blocked_range = Range.new(*[start.x, current.x].minmax)
-        return [false, blocked_range.map { |x| [start.y, x] }]
+        return [true, blocked_range.map { |x| [start.y, x] }]
       else
         @waters << target
         current = target

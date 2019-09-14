@@ -20,7 +20,7 @@ end
 samples = []
 scanner = StringScanner.new(File.read("input/day_16"))
 
-while scanner.scan /Before: \[(\d+, \d+, \d+, \d+)\]\n(\d+ \d+ \d+ \d+)\nAfter:  \[(\d+, \d+, \d+, \d+)\]\n\n/
+while scanner.scan(/Before: \[(\d+, \d+, \d+, \d+)\]\n(\d+ \d+ \d+ \d+)\nAfter:  \[(\d+, \d+, \d+, \d+)\]\n\n/)
   before, after = scanner.values_at(1, 3).map { |s| s.split(", ").map(&:to_i) }
   op = scanner.values_at(2).map(&:split).flatten.map(&:to_i)
   samples << Sample.new(before, op, after)

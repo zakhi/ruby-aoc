@@ -14,7 +14,7 @@ end
 
 claims = File.readlines("input/day_3").map do |line|
   match = /#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/.match(line)
-  Claim.new(*match.values_at(*1..5).map(&:to_i))
+  Claim.new(*match[1..5].map(&:to_i))
 end
 
 square_overlaps = claims.flat_map(&:to_a).tally

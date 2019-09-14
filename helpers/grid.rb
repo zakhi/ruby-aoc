@@ -1,10 +1,10 @@
 Point = Struct.new(:x, :y) do
-  def to_s
-    "<#{x}, #{y}>"
-  end
-
   def distance_to(other)
     (self.x - other.x).abs + (self.y - other.y).abs
+  end
+
+  def to_s
+    "<#{x}, #{y}>"
   end
 end
 

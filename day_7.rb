@@ -22,7 +22,7 @@ end
 
 
 Rules = File.readlines("input/day_7").map do |line|
-  /Step (\w) must be finished before step (\w) can begin/.match(line).to_a.drop(1)
+  /Step (\w) must be finished before step (\w) can begin/.match(line)[1..2]
 end
 
 def create_steps
@@ -71,7 +71,7 @@ until steps.all?(&:completed?)
     worker = workers.find(&:idle?)
     step = steps_left.find(&:can_start?)
 
-    break if !worker or !step
+    break unless worker and step
     worker.assign(step)
     steps_left.delete(step)
   end

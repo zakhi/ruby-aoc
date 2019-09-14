@@ -8,12 +8,12 @@ end
 
 points = File.readlines("input/day_10").map do |line|
   match = /<\s?(-?\d+), \s?(-?\d+)> .*<\s?(-?\d+), \s?(-?\d+)>/.match(line)
-  Point.new(*match.values_at(*1..4).map(&:to_i))
+  Point.new(*match[1..4].map(&:to_i))
 end
 
 def total_distance(points, time=0)
-  xs = points.map { |p| p.position_after(time).first }
-  xs.max - xs.min
+  min_x, max_x = points.map { |p| p.position_after(time).first }.minmax
+  max_x - min_x
 end
 
 def print(points, time)
@@ -29,7 +29,7 @@ end
 
 previous_distance = total_distance(points)
 
-message_time = NaturalNumbers.each do |time|
+message_time = 1.step do |time|
   distance = total_distance(points, time)
   break time - 1 if distance > previous_distance
   previous_distance = distance

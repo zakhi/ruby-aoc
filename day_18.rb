@@ -18,11 +18,11 @@ class Field
   end
 
   def progress
-    Enumerator.new do |y|
+    Enumerator.new do |yielder|
       current_field = self
       loop do
         new_field = current_field.transform
-        y << new_field
+        yielder << new_field
         current_field = new_field
       end
     end
@@ -73,9 +73,7 @@ previous_fields = { field.all_squares => [0, field] }
 
 repeating_index, previous_index, repeating_field = field.progress.each_with_index do |next_field, i|
   previous_field = previous_fields[next_field.all_squares]
-  if previous_field
-    break [i + 1, *previous_field]
-  end
+  break [i + 1, *previous_field] if previous_field
   previous_fields[next_field.all_squares] = [i + 1, next_field]
 end
 

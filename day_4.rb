@@ -8,12 +8,12 @@ class Guard
     @sleep_periods = []
   end
 
-  def fall_asleep(min)
-    @sleep_start = min
+  def fall_asleep(minute)
+    @sleep_start = minute
   end
 
-  def wake_up(min)
-    @sleep_periods << (@sleep_start...min)
+  def wake_up(minute)
+    @sleep_periods << (@sleep_start...minute)
   end
 
   def sleeper?
@@ -24,9 +24,9 @@ class Guard
     @sleep_periods.map(&:size).sum
   end
 
-  def min_most_frequent_asleep
-    min_counts = @sleep_periods.flat_map(&:to_a).tally
-    min_counts.max_by(&:last)
+  def minute_most_frequent_asleep
+    minute_counts = @sleep_periods.flat_map(&:to_a).tally
+    minute_counts.max_by(&:last)
   end
 end
 
