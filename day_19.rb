@@ -1,19 +1,5 @@
 require_relative "common/operations"
 
-class Instruction
-  def initialize(name, a, b, c)
-    @name, @a, @b, @c = name, a, b, c
-  end
-
-  def run(registers)
-    OPERATIONS[@name][@a, @b, @c, registers]
-  end
-
-  def to_s
-    "#{@name} #{@a} #{@b} #{@c}"
-  end
-end
-
 lines = File.readlines("input/day_19")
 ip_register = lines.shift.match(/#ip (\d+)/)[1].to_i
 

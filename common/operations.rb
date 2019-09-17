@@ -16,3 +16,17 @@ OPERATIONS = {
   eqri: -> (a, b, c, regs) { regs[c] = regs[a] == b ? 1 : 0 },
   eqrr: -> (a, b, c, regs) { regs[c] = regs[a] == regs[b] ? 1 : 0 }
 }
+
+class Instruction
+  def initialize(name, a, b, c)
+    @name, @a, @b, @c = name, a, b, c
+  end
+
+  def run(registers)
+    OPERATIONS[@name][@a, @b, @c, registers]
+  end
+
+  def to_s
+    "#{@name} #{@a} #{@b} #{@c}"
+  end
+end
