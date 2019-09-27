@@ -1,5 +1,5 @@
 require "strscan"
-require_relative "common/operations"
+require_relative "../common/operations"
 
 class Sample
   attr_reader :code
@@ -38,10 +38,10 @@ until id_matches.empty?
   unique_matches = id_matches.select { |id, names| names.count == 1 }
   resolved_id = unique_matches.map(&:first)
 
-  operation_names.merge!(Hash[unique_matches.map { |id, (name)| [id, name] }])
+  operation_names.merge!(unique_matches.map { |id, (name, *)| [id, name] }.to_h)
   id_matches.delete_if { |id, *| resolved_id.include?(id) }
-  
-  new_unique_names = unique_matches.map { |*, (name)| name }
+
+  new_unique_names = unique_matches.map { |*, (name, *)| name }
   id_matches.each { |*, names| new_unique_names.each { |name| names.delete(name) } }
 end
 

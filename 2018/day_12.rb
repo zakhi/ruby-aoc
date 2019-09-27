@@ -1,5 +1,5 @@
 require "set"
-require_relative "helpers/enumerable"
+require_relative "../helpers/enumerable"
 
 initial_state, rules = File.open("input/day_12") do |file|
   initial_state = /[#.]+/.match(file.gets).to_s
@@ -17,7 +17,7 @@ end
 def transform(state, rules)
   min = state.min - 2
   max = state.max + 2
-  
+
   new_state = (min..max).select do |index|
     area = (index - 2)..(index + 2)
     plants_in_area = area.select { |i| state.include? i }
@@ -27,7 +27,7 @@ def transform(state, rules)
   new_state.to_set
 end
 
-def grow(state, rules, generations) 
+def grow(state, rules, generations)
   generations.times.inject(state) do |current_state|
     transform(current_state, rules)
   end
@@ -35,7 +35,7 @@ end
 
 puts "Part 1: #{grow(initial_state, rules, 20).sum}"
 
-iterations = 50000000000
+iterations = 50_000_000_000
 
 repeating_state, generation = (1..iterations).inject(initial_state) do |current_state, gen|
   new_state = transform(current_state, rules)

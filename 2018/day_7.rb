@@ -14,7 +14,7 @@ class Step
   def completed?
     @time_left == 0
   end
-  
+
   def work(seconds=@time_left)
     @time_left -= seconds
   end
@@ -54,7 +54,7 @@ class Worker
   end
 
   def work
-    if @step
+    unless @step.nil?
       @step.work(1)
       @step = nil if @step.completed?
     end

@@ -21,7 +21,8 @@ class Node
   end
 
   def value
-    return @metadata.sum if @children.empty? 
+    return @metadata.sum if @children.empty?
+
     @metadata.select(&:positive?).map { |i| @children[i - 1] }.compact.sum(&:value)
   end
 end

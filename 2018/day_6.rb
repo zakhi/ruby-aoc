@@ -1,4 +1,4 @@
-require_relative("helpers/grid")
+require_relative("../common/grid")
 
 class Point
   def closest_points
@@ -8,8 +8,7 @@ end
 
 class Grid
   def on_edge(point)
-    point.x == @xs.begin || point.x == @xs.end ||
-    point.y == @ys.begin || point.y == @ys.end
+    point.x == @xs.begin || point.x == @xs.end || point.y == @ys.begin || point.y == @ys.end
   end
 end
 
@@ -34,14 +33,14 @@ end
 max_area = points_with_finite_area.map { |p| p.closest_points.length }.max
 puts "Part 1: #{max_area}"
 
-expand_size = 10000 / (points.size - 1)
-safe_x_range = (x_range.begin - expand_size .. x_range.end + expand_size)
-safe_y_range = (y_range.begin - expand_size .. y_range.end + expand_size)
+expand_size = 10_000 / (points.size - 1)
+safe_x_range = (x_range.begin - expand_size..x_range.end + expand_size)
+safe_y_range = (y_range.begin - expand_size..y_range.end + expand_size)
 
 safe_grid = Grid.new(safe_x_range, safe_y_range)
 
 safe_area = safe_grid.count do |location|
-  points.sum { |p| p.distance_to(location) } < 10000
+  points.sum { |p| p.distance_to(location) } < 10_000
 end
 
 puts "Part 2: #{safe_area}"

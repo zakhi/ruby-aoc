@@ -1,5 +1,5 @@
-require_relative "helpers/grid"
-require_relative "helpers/enumerable"
+require_relative "../common/grid"
+require_relative "../helpers/enumerable"
 
 class Claim < Grid
   attr_reader :id
@@ -19,8 +19,8 @@ end
 
 square_overlaps = claims.flat_map(&:to_a).tally
 
-overlaps = square_overlaps.values.count { |v| v >= 2 }
-puts "Part 1: #{overlaps}"
+two_plus_overlaps = square_overlaps.values.count { |v| v >= 2 }
+puts "Part 1: #{two_plus_overlaps}"
 
 non_overlapping_claim = claims.find do |claim|
   claim.all? { |square| square_overlaps[square] == 1 }

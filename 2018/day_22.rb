@@ -1,5 +1,5 @@
 require "set"
-require_relative "helpers/queue"
+require_relative "../helpers/queue"
 
 class Array
   alias_method :x, :first
@@ -13,9 +13,9 @@ Region = Struct.new(:position, :type, :equipment) do
       .reject { |position| position.x < 0 || position.y < 0 }
 
     neighbors = positions.map { |position| [position, cave.type(position)] }
-      .select { |position, type| valid_equipments(type).include?(equipment) }
+      .select { |*, type| valid_equipments(type).include?(equipment) }
       .map { |position, type| Region.new(position, type, equipment) }
-    
+
     neighbors + [Region.new(position, type, alternate_equipment)]
   end
 
@@ -45,7 +45,7 @@ class Cave
     @depth, @target = depth, target
     @erosion_levels = {}
   end
-  
+
   def risk_level
     (0..@target.x).to_a.product((0..@target.y).to_a).sum { |region| erosion_level(region) % 3 }
   end
@@ -88,7 +88,7 @@ queue.push(TimedRegion.new(start, 0))
 until queue.empty?
   current_region, current_time = *queue.pop
   break if current_region == destination
-  
+
   next if visited.include?(current_region)
   visited << current_region
 

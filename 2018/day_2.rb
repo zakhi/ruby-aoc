@@ -1,4 +1,4 @@
-require_relative("helpers/enumerable")
+require_relative("../helpers/enumerable")
 
 box_ids = File.readlines("input/day_2").map(&:chomp)
 twos, threes = 0, 0

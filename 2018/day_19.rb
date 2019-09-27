@@ -1,4 +1,4 @@
-require_relative "common/operations"
+require_relative "../common/operations"
 
 lines = File.readlines("input/day_19")
 ip_register = lines.shift.match(/#ip (\d+)/)[1].to_i
@@ -25,6 +25,6 @@ puts "Part 1: #{registers[0]}"
 
 def divisors_sum(num)
   (1..num).lazy.select { |i| num % i == 0 }.sum
-end 
+end
 
-puts "Part 2: #{divisors_sum(10551340)}"
+puts "Part 2: #{divisors_sum(10_551_340)}"

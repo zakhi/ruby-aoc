@@ -45,11 +45,11 @@ end
 
 class Combat
   def initialize(field, elf_attack_power: 3, display: false)
-    @players = field.select { |*, char| char =~ /E|G/ }.map do |pos, char|
+    @players = field.select { |*, char| char =~ /[EG]/ }.map do |pos, char|
       Player.new(char, pos, char == "E" ? elf_attack_power : 3)
     end
 
-    @field = field.transform_values { |char| char =~ /E|G/ ? "." : char }
+    @field = field.transform_values { |char| char =~ /[EG]/ ? "." : char }
     @completed_rounds = 0
     @elf_attack_power = elf_attack_power
     @display = display
@@ -57,7 +57,7 @@ class Combat
 
   def play_out(until_elf_dies: false)
     show if @display
-    while !completed?
+    until completed?
       alive_players.sort_by(&:position).each do |player|
         next if player.dead?
         return if enemies_of(player).empty?
@@ -158,7 +158,7 @@ class Combat
     end
 
     puts
-    puts "After #{@completed_rounds} rounds (Elf attack power: #{@elf_attack_power})" 
+    puts "After #{@completed_rounds} rounds (Elf attack power: #{@elf_attack_power})"
     rows.zip(players_in_rows) do |row, players|
       puts "#{row.join} #{players.join(", ")}"
     end

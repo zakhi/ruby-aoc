@@ -3,24 +3,24 @@ class Polymer
     @chars = chars
   end
 
-  def react(ignore_unit=nil)
+  def react(ignore_unit = nil)
     reacted_polymer = []
 
-    for unit in @chars
+    @chars.each do |unit|
       next if unit.downcase == ignore_unit
-      
-      if reacted_polymer.empty? or !react_with(unit, reacted_polymer.last)
+
+      if reacted_polymer.empty? || !react_with(unit, reacted_polymer.last)
         reacted_polymer << unit
       else
         reacted_polymer.pop
       end
     end
-    
+
     reacted_polymer.length
   end
 
   def react_with(first, second)
-    first != second and first.downcase == second.downcase
+    first != second && first.downcase == second.downcase
   end
 end
 

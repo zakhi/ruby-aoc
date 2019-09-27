@@ -1,4 +1,4 @@
-require_relative("helpers/enumerable")
+require_relative("../helpers/enumerable")
 
 class Guard
   attr_reader :id
@@ -35,7 +35,7 @@ lines = File.readlines("input/day_4").sort!
 guards = Hash.new { |hash, id| hash[id] = Guard.new(id) }
 current_guard = nil
 
-for line in lines
+lines.each do |line|
   case line
   when /Guard #(\d+) begins shift/
     current_guard = guards[$1.to_i]
@@ -47,7 +47,7 @@ for line in lines
 end
 
 most_sleeper = guards.values.max_by(&:total_min_sleep)
-puts "Part 1: #{most_sleeper.id * most_sleeper.min_most_frequent_asleep.first}"
+puts "Part 1: #{most_sleeper.id * most_sleeper.minute_most_frequent_asleep.first}"
 
-most_consistent_sleeper = guards.values.select(&:sleeper?).max_by { |guard| guard.min_most_frequent_asleep.last }
-puts "Part 2: #{most_consistent_sleeper.id * most_consistent_sleeper.min_most_frequent_asleep.first}"
+most_consistent_sleeper = guards.values.select(&:sleeper?).max_by { |guard| guard.minute_most_frequent_asleep.last }
+puts "Part 2: #{most_consistent_sleeper.id * most_consistent_sleeper.minute_most_frequent_asleep.first}"

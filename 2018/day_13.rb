@@ -68,7 +68,7 @@ class Tracks
 
   def drive
     while running_carts.size > 1
-      for cart in @carts.sort_by(&:location)
+      @carts.sort_by(&:location).each do |cart|
         next if @crashed.include?(cart)
         cart.move(self)
         crashed_into_cart = running_carts.reject { |c| c == cart }.find { |c| c.location == cart.location }
@@ -79,7 +79,7 @@ class Tracks
       end
     end
   end
-  
+
   def [](location)
     @track[location.y][location.x]
   end
@@ -90,17 +90,17 @@ class Tracks
 end
 
 Directions = {
-  "^" => :up,
-  ">" => :right,
-  "v" => :down,
-  "<" => :left
+    :^ => :up,
+    :> => :right,
+    :v => :down,
+    :< => :left
 }
 
 carts = []
 
 track = File.readlines("input/day_13").each_with_index.map do |line, index|
   line.to_enum(:scan, /[<>^v]/).map { Regexp.last_match }.each do |match|
-    carts << Cart.new(Location.new(match.begin(0), index), Directions[match.to_s])
+    carts << Cart.new(Location.new(match.begin(0), index), Directions[match.to_s.to_sym])
   end
   line.gsub(/[<>]/, "-").gsub(/[v^]/, "|")
 end

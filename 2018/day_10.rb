@@ -1,4 +1,4 @@
-require_relative "helpers/enumerable"
+require_relative "../helpers/enumerable"
 
 Point = Struct.new(:x, :y, :vx, :vy) do
   def position_after(seconds)
@@ -21,7 +21,7 @@ def print(points, time)
   xs = Range.new(*positions.map(&:first).minmax)
   ys = Range.new(*positions.map(&:last).minmax)
 
-  for y in ys
+  ys.each do |y|
     puts xs.map { |x| positions.include?([x, y]) ? "#" : " " }.join
   end
   puts

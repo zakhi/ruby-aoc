@@ -32,7 +32,7 @@ class FuelGrid
     fuel = @sum_grid[x2][y2]
     fuel -= @sum_grid[x1 - 1][y2] if x1 > 0
     fuel -= @sum_grid[x2][y1 - 1] if y1 > 0
-    fuel += @sum_grid[x1 - 1][y1 - 1] if x1 > 0 and y1 > 0
+    fuel += @sum_grid[x1 - 1][y1 - 1] if (x1 > 0) && (y1 > 0)
     fuel
   end
 
@@ -48,7 +48,7 @@ class FuelGrid
         @sum_grid[x][y] = @grid[x][y]
         @sum_grid[x][y] += @sum_grid[x - 1][y] if x > 0
         @sum_grid[x][y] += @sum_grid[x][y - 1] if y > 0
-        @sum_grid[x][y] -= @sum_grid[x - 1][y - 1] if x > 0 and y > 0
+        @sum_grid[x][y] -= @sum_grid[x - 1][y - 1] if (x > 0) && (y > 0)
       end
     end
   end

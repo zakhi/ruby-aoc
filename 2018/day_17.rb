@@ -38,8 +38,8 @@ class Land
   end
 
   def flow_sideways(start)
-    right_reached_end, right_blocked_tiles = flow_one_side(start, :right) 
-    left_reached_end, left_blocked_tiles = flow_one_side(start, :left) 
+    right_reached_end, right_blocked_tiles = flow_one_side(start, :right)
+    left_reached_end, left_blocked_tiles = flow_one_side(start, :left)
 
     if right_blocked_tiles and left_blocked_tiles
       @blocks.merge(right_blocked_tiles + left_blocked_tiles)
@@ -93,7 +93,7 @@ class Land
 end
 
 blocks = File.readlines("input/day_17").flat_map do |line|
-  match = /(x|y)=(\d+), (x|y)=(\d+\.\.\d+)/.match(line)
+  match = /([xy])=(\d+), ([xy])=(\d+\.\.\d+)/.match(line)
   axis = match[1]
   fixed = match[2].to_i
   range = eval(match[4])

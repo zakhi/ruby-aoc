@@ -38,20 +38,20 @@ class Field
       end
       [position, new_type]
     end
-    Field.new(result_field)  
+    Field.new(result_field)
   end
 
   def adjacents_of(square)
     indices = [-1, 0, 1]
-    indices.product(indices).reject { |s| s == [0, 0] }.map do |s| 
-      [square.first + s.first, square.last + s.last ] 
+    indices.product(indices).reject { |s| s == [0, 0] }.map do |s|
+      [square.first + s.first, square.last + s.last ]
     end
   end
 
   def display
     max = @field.keys.max
     (0..max.first).each do |y|
-      puts (0..max.last).map { |x| @field[[y, x]] }.join
+      puts "#{(0..max.last).map { |x| @field[[y, x]] }.join}"
     end
   end
 end
@@ -71,14 +71,14 @@ puts "Part 1: #{field_after_10_minutes.woods * field_after_10_minutes.lumberyard
 
 previous_fields = { field.all_squares => [0, field] }
 
-repeating_index, previous_index, repeating_field = field.progress.each_with_index do |next_field, i|
+repeating_index, previous_index, * = field.progress.each_with_index do |next_field, i|
   previous_field = previous_fields[next_field.all_squares]
   break [i + 1, *previous_field] if previous_field
   previous_fields[next_field.all_squares] = [i + 1, next_field]
 end
 
 gap = repeating_index - previous_index
-target = 1000000000
+target = 1_000_000_000
 
 remainder = (target - previous_index) % gap
 target_field = previous_fields.values.find { |index, *| index == previous_index + remainder }.last
