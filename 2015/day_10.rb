@@ -1,18 +1,8 @@
-require "strscan"
-
 INPUT = "1113122113"
 
 def look_and_say(times, start: INPUT)
   times.times.inject(start) do |string|
-    scanner = StringScanner.new(string)
-    result = []
-
-    until scanner.eos?
-      pattern = scanner.scan(/(\d)\1*/)
-      result << pattern.length << pattern[0]
-    end
-
-    result.join
+    string.scan(/((\d)\2*)/).flat_map { |pattern, digit| [pattern.length, digit] }.join
   end
 end
 
