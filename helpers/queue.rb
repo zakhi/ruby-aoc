@@ -1,3 +1,5 @@
+require "set"
+
 class MinimumQueue
   def initialize
     @elements = [nil]
@@ -8,18 +10,22 @@ class MinimumQueue
     bubble_up(@elements.size - 1)
   end
 
+  alias :<< :push
+
+  def size
+    @elements.size - 1
+  end
+
   def pop
     exchange(1, @elements.size - 1)
-    min = @elements.pop 
-    bubble_down(1)
-    min
+    @elements.pop.tap { bubble_down(1) }
   end
 
   def empty?
     @elements.size == 1
   end
 
-  private 
+  private
 
   def bubble_up(index)
     parent_index = index / 2
@@ -32,7 +38,7 @@ class MinimumQueue
   def bubble_down(index)
     child_index = index * 2
     return if child_index > @elements.size - 1
-    
+
     left = @elements[child_index]
     right = @elements[child_index + 1]
     child_index += 1 if child_index < @elements.size - 1 && right < left
