@@ -8,7 +8,7 @@ Formula = Struct.new(:input, :output) do
   def transform(amount)
     times = (amount.to_f / output.quantity).ceil.to_i
     result = input.map { |c| c.with_quantity(c.quantity * times) }
-    result + [output.with_quantity(- times * output.quantity)]
+    result + [output.with_quantity(-1 * times * output.quantity)]
   end
 end
 
@@ -57,4 +57,20 @@ formulas = File.readlines("input/day_14").map do |line|
 end
 
 factory = NanoFactory.new(formulas)
-puts "Part 1: #{factory.amount_needed_for(Chemical.new("FUEL", 1))}"
+ore_needed_per_fuel = factory.amount_needed_for(Chemical.new("FUEL", 1))
+puts "Part 1: #{ore_needed_per_fuel}"
+
+fuel_floor = 10 ** 12 / ore_needed_per_fuel
+fuel_ceiling = 10 ** 13 / ore_needed_per_fuel
+
+while fuel_floor < fuel_ceiling
+  fuel = (fuel_floor + fuel_ceiling) / 2
+  break if fuel == fuel_floor
+
+  ore = factory.amount_needed_for(Chemical.new("FUEL", fuel))
+
+  fuel_ceiling = fuel if ore >= 10 ** 12
+  fuel_floor = fuel if ore <= 10 ** 12
+end
+
+puts "Part 2: #{fuel_floor}"
